@@ -17,15 +17,15 @@ router.post("/register", UserController.registerUser)
 //LoginUser API
 router.post('/login', UserController.loginUser)
 // create Book API
-router.post('/books',loginCheck.userAuth,BookController.createBook)   //!----
+router.post('/books',loginCheck.userAuth,BookController.createBook)   //!----Authorisation
 // get Books  API
 router.get('/books',loginCheck.userAuth,BookController.getBooks)
 // get BooksByID API
 router.get('/books/:bookId',loginCheck.userAuth, BookController.getBooksByID)
 // put update API 
-router.put('/books/:bookId' ,loginCheck.userAuth,BookController.updateBooks ) //!-----
+router.put('/books/:bookId' ,loginCheck.userAuth,BookController.updateBooks ) //!-----Authorisation
 // Delete Book API
-router.delete('/books/:bookId' ,loginCheck.userAuth,BookController.deleteByBookId) //!-------
+router.delete('/books/:bookId' ,loginCheck.userAuth,BookController.deleteByBookId) //!-------Authorisation
 
 //Review API
 //Create Review API
