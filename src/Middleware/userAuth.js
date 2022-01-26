@@ -10,11 +10,11 @@ const userAuth = async (req, res, next) => {
 
         }
 
-
+        //Decode Token to extract Time
         let timeOut = jwt.decode(token,'project4')
         
        
-
+        
         //let timeOut = jwt.verify(token, 'project4')
         
         if (!timeOut) {
