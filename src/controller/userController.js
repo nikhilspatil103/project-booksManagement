@@ -126,7 +126,7 @@ const loginUser = async function (req, res) {
 
         res.header("x-api-key", token);
         //console.log(moment().format("YYYY-MM-DD"))
-        res.status(201).send({ status: true, msg: "successful login", token: { token } });
+        res.status(201).send({ status: true, msg: "successful login",userId:user._id, token: { token } });
     } catch (error) {
         res.status(500).send({ status: false, msg: error.message });
     }

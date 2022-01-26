@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false

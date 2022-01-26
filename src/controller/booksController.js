@@ -10,7 +10,7 @@ const validator = require('../validator/validate')
 
 //------------------------------------------------------------------------//
 
-const createBook = function (req, res) {
+const createBook = async function (req, res) {
     try {
         const requestBody = req.body
         const userIdFromToken = req.userId
@@ -28,16 +28,16 @@ const createBook = function (req, res) {
         if (!validator.isValid(userId)) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, please provide userId" })
         }
-        userId = userId.trim()
-        if (!validator.isValidObjectId(userId)) {             //!-------Ask Mentor------------//
+        
+        if (!validator.isValidObjectId(userId)) {            
             return res.status(400).send({ status: false, message: "userId provided is not valid" })
         }
-        const user = userModel.findById(userId)
-
+        const user = await userModel.findOne({_id:userId})
+       
         if (!user) {
             return res.status(400).send({ status: false, message: `User does not exit` })
         }
-
+   
         if (user._id.toString() !== userIdFromToken) {
             res.status(401).send({ status: false, message: `Unauthorized access! Owner info doesn't match` });
             return
@@ -47,7 +47,7 @@ const createBook = function (req, res) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, please provide Title" })
         }
 
-        const isTitleAlreadyPresent = booksModel.findOne({ title })
+        const isTitleAlreadyPresent = await booksModel.findOne({ title })
 
         if (isTitleAlreadyPresent) {
             return res.status(400).send({ status: false, message: "Title Already Present" })
@@ -60,7 +60,8 @@ const createBook = function (req, res) {
         if (!validator.isValid(ISBN)) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, please provide ISBN" })
         }
-        const IsbnAlreadyPresent = booksModel.findOne({ ISBN: requestBody.ISBN })
+        const IsbnAlreadyPresent = await booksModel.findOne({ ISBN: requestBody.ISBN })
+
         if (IsbnAlreadyPresent) {
             return res.status(400).send({ status: false, message: "ISBN is already present" })
         }
@@ -80,7 +81,7 @@ const createBook = function (req, res) {
         //------------------------------------Validation Ends-------------------------------------------------------------//
 
         const updatedBody = { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt }
-        let bookData = booksModel.create(updatedBody)
+        let bookData = await booksModel.create(updatedBody)
         return res.status(201).send({ status: true, message: 'Success', data: bookData })
 
     } catch (err) {
@@ -108,7 +109,7 @@ const getBooks = async function (req, res) {  //!----- testing ----
             }
         }
 
-        let book = await booksModel.find(obj).select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, reviews: 1, releasedAt: 1 })
+        let book = await booksModel.find(obj).select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, reviews: 1, releasedAt: 1 ,subcategory:1})
         if (!book) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, No such book present" })
         }
@@ -137,9 +138,9 @@ const getBooksByID = async function (req, res) {
     let reviewsData = await reviewModel.find({ bookId }).select({ isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
     let book = await booksModel.findOne({ _id: bookId, isDeleted: false }).select({ __v: 0 })
     if (!book) {
-        return res.status(404).send({ status: false, message: `Book not found Or is been delete` })
+        return res.status(404).send({ status: false, message: `Book not found Or is been deleted` })
     }
-    let iBook = book.toObject()                    //!-Ask mentor--------------------------review
+    let iBook = book.toObject()                    
     if (reviewsData) {
         iBook['reviewsData'] = reviewsData
     }
@@ -158,7 +159,6 @@ const updateBooks = async function (req, res) {
         const params = req.params
         const bookId = params.bookId
         const userIdFromToken = req.userId
-
 
 
         if (!validator.isValidObjectId(bookId)) {

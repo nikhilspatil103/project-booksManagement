@@ -62,7 +62,7 @@ const createReview = async function (req, res) {
             review: review
         }
         let data = await reviewModel.create(updateReview)
-        let newData = await reviewModel.findOne(updateReview).select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+        let newData = await reviewModel.findOne(updateReview).select({ createdAt: 0, updatedAt: 0, __v: 0 })
 
         await booksModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } })
 
@@ -138,7 +138,7 @@ const updateReview = async function (req, res) {
             }, { new: true }
         )
         let reviewsData = await reviewModel.find({ bookId })
-        let iBook = book.toObject()                    //!-Ask mentor--------------------------review
+        let iBook = book.toObject()                   
 
         if (reviewsData) {
             iBook['reviewsData'] = reviewsData

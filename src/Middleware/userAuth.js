@@ -15,9 +15,9 @@ const userAuth = async (req, res, next) => {
         
        
         
-        //let timeOut = jwt.verify(token, 'project4')
+        let verifyToken = jwt.verify(token, 'project4')
         
-        if (!timeOut) {
+        if (!verifyToken) {
             return res.status(403).send({ status: false, message: `Invalid authentication token in request ` })
         }
         //compare expiry time with current time
