@@ -64,12 +64,10 @@ const registerUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, please provide password" })
         }
         password = password.trim()
-        if (!(password.length >= 8 && password.length <= 15) && /^\s+$/.test(password)) {        //!---Ask Mentor about spcae
+        if (!(password.length >= 8 && password.length <= 15)) {        
             return res.status(400).send({ status: false, message: "Password should be Valid min 8 and max 15 " })
         }
-        if (!/^\s+$/.test(password)) {        //!---Ask Mentor about spcae
-            return res.status(400).send({ status: false, message: "Password should not contain spaces " })
-        }
+       
         //---------------------------------------Validation Ends-----------------------------------//
 
         const udatedBody = { title, name, phone, email, password, address }
@@ -111,9 +109,7 @@ const loginUser = async function (req, res) {
         if (!(password.length >= 8 && password.length <= 15)) {        
             return res.status(400).send({ status: false, message: "Password should be Valid min 8 and max 15 " })
         }
-        if (!/^\s+$/.test(password)) {        //!---Ask Mentor about spcae
-            return res.status(400).send({ status: false, message: "Password should not contain spaces " })
-        }
+      
         const user = await userModel.findOne({ email: email, password: password }); 
 
         if (!user) {

@@ -112,14 +112,9 @@ const getBooks = async function (req, res) {  //!----- testing ----
         if (!book) {
             return res.status(400).send({ status: false, message: "Invalid request parameter, No such book present" })
         }
+        let sortedByTitle = book.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1) 
 
-        let sortedByTitle = book.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1)   //!---Ask Mentor---
-
-        if (sortedByTitle.length == 0) {
-            return res.status(204).send({ status: true })
-        }
-
-        res.status(200).send({ status: true, data: book })
+        res.status(200).send({ status: true, data: sortedByTitle  })
     }
     catch (err) {
         res.status(500).send({ status: false, msg: err.message })
