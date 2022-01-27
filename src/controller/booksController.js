@@ -90,7 +90,7 @@ const createBook = async function (req, res) {
 
 }
 
-const getBooks = async function (req, res) {  //!----- testing ----
+const getBooks = async function (req, res) {  
     try {
         let queryParams = req.query;
         const obj = { isDeleted: false }
