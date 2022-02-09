@@ -144,9 +144,7 @@ const getBooksByID = async function (req, res) {
     if (reviewsData) {
         iBook['reviewsData'] = reviewsData
     }
-    //book.save()
-
-    //book['reviewsData'] =reviewsData
+ 
     res.status(200).send({ status: true, data: iBook })
 
 
