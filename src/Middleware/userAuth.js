@@ -13,7 +13,7 @@ const userAuth = async (req, res, next) => {
         //Decode Token to extract Time
         let timeOut = jwt.decode(token, 'project4')
 
-        //compare expiry time with current time
+        //compare expiry time with current time.
         if (Date.now() > (timeOut.exp) * 1000) {
             return res.status(404).send({ status: false, message: `Session Expired, please login again` })
         }

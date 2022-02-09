@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken')
-const moment = require('moment')
+
 const validator=require('../validator/validate')
 
 
